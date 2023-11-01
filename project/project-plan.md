@@ -46,9 +46,9 @@ The dataset includes essential player details such as name, nationality, team af
 3. Data exploration [#3][i3]
 4. Final report [#4][i4]
 
-[i1]: https://github.com/jvalue/made-template/issues/1
-[i2]: https://github.com/jvalue/made-template/issues/2
-[i3]: https://github.com/jvalue/made-template/issues/3
-[i4]: https://github.com/jvalue/made-template/issues/4
+[i1]: https://github.com/egzoshift/made-template/issues/2
+[i2]: https://github.com/egzoshift/made-template/issues/3
+[i3]: https://github.com/egzoshift/made-template/issues/4
+[i4]: https://github.com/egzoshift/made-template/issues/5
 <!--[i5]: https://github.com/jvalue/made-template/issues/5 -->
 
