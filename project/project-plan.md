@@ -10,7 +10,7 @@ eSports as a profession
 
 ## Description
 
-The eSports industry has grown significantly over the past ten years, with professional players earning incomes comparable to traditional athletes. This project aims to analyze the professionalization of esports through the earnings of players using two main datasets. The first dataset contains player statistics from all CS:GO majors, and the second dataset contains information about cash prizes distributed in various eSports events from 1998 to 2023. By analyzing these datasets, we aim to gain insights into the evolution of eSports earnings to investigate how this industry has become more professional over time.
+The eSports industry has grown significantly over the past ten years, with professional players earning incomes comparable to traditional athletes. This project aims to analyze the professionalization of esports through the earnings of players using two main datasets. The first dataset contains statistics about the past 2000 CSGO tournaments at HLTV.org which is the leading Counter-Strike coverage site in the world and the second dataset contains information about cash prizes distributed in various eSports events from 1998 to 2023. By analyzing these datasets, we aim to gain insights into the evolution of eSports earnings to investigate how this industry has become more professional over time.
 
 ## Datasources
 
