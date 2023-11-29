@@ -1,0 +1,83 @@
+pipeline TrainStopsPipeline{
+
+    constraint NoEmptyCellsConstraint oftype LengthConstraint {
+        minLength: 1;
+        maxLength: 9007199254740991;
+    }
+
+    valuetype NoEmptyCells oftype text{
+        constraints: [
+            NoEmptyCellsConstraint,];
+    }
+
+     constraint GeopgraphicCoordConstraint oftype RangeConstraint {
+        upperBound: 90;
+        lowerBound: -90;
+    }
+
+    valuetype GeopgraphicCoordinate oftype decimal {
+        constraints: [
+            GeopgraphicCoordConstraint,];
+    }
+    
+    constraint IFOPTFormatConstraint oftype RegexConstraint {
+        regex: /^.{2}:[0-9]*:[0-9]*(:[0-9]*)?$/;
+    }
+
+    valuetype IFOPTFormat oftype text {
+        constraints: [
+            IFOPTFormatConstraint,];
+    }
+
+    constraint VerkehrConstraint oftype AllowlistConstraint {
+        allowlist: ["RV", "FV", "nur DPN"];
+    }
+
+    valuetype Verkehr oftype text {
+        constraints: [
+            VerkehrConstraint,];
+    }
+    
+
+    TrainStopsHttpExtrac
+    -> TrainStopsTextFileInterpr
+    -> TrainStopsCSVInterpr
+    -> TrainStopsColumnDel
+    -> TrainStopsTableInterpr
+    -> TrainStopsSQLiteLoader;
+
+    block TrainStopsHttpExtrac oftype HttpExtractor{
+        url: "https://download-data.deutschebahn.com/static/datasets/haltestellen/D_Bahnhof_2020_alle.CSV";
+    }
+
+    block TrainStopsTextFileInterpr oftype TextFileInterpreter {
+    }
+
+    block TrainStopsCSVInterpr oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    //Status column removed coz it is column J
+    block TrainStopsColumnDel oftype ColumnDeleter {
+        delete: [column J];
+    }
+
+    block TrainStopsTableInterpr oftype TableInterpreter {
+        header: true;
+        columns: [
+            "EVA_NR" oftype integer,
+            "DS100" oftype NoEmptyCells,
+            "IFOPT" oftype IFOPTFormat,
+            "NAME" oftype NoEmptyCells,
+            "Verkehr" oftype Verkehr,
+            "Laenge" oftype GeopgraphicCoordinate,
+            "Breite" oftype GeopgraphicCoordinate,
+            "Betreiber_Name" oftype NoEmptyCells,
+            "Betreiber_Nr" oftype integer,];
+    }
+
+    block TrainStopsSQLiteLoader oftype SQLiteLoader {
+		table: "trainstops";
+		file: "./trainstops.sqlite";
+	}
+}
