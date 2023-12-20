@@ -1,9 +1,9 @@
 #!/bin/bash
 python3 ./automatedPipeline.py
-echo "Pipeline executed"
+echo "Pipeline executed v3"
 
 python3 ./test.py
-echo "Pipeline tested v2"
+echo "Pipeline tested v3"
 
 # To run the tests you need kaggle credentials to pull data from kaggle.
 # To do so: 
