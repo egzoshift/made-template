@@ -1,0 +1,31 @@
+name: Project-pipeline-feedback
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'project/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout-repository
+        uses: actions/checkout@v2
+
+      - name: Python-setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install-dependencies
+        run: |
+          pip3 install sqlalchemy pandas requests numpy
+
+      - name: Run-pipeline
+        run: python project/Project_Pipeline_Work3.py
+        
+      - name: Test-pipeline
+        run: python project/test.py
