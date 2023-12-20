@@ -15,6 +15,12 @@ jobs:
       - name: Checkout-repository
         uses: actions/checkout@v2
 
+      - name: Set-up-kaggle-credentials
+        run: |
+              mkdir -p ~/.kaggle
+              echo '{"username":"${{ secrets.KAGGLE_USERNAME }}","key":"${{ secrets.KAGGLE_KEY }}"}' > ~/.kaggle/kaggle.json
+              chmod 600 ~/.kaggle/kaggle.json
+
       - name: Python-setup
         uses: actions/setup-python@v2
         with:
