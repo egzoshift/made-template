@@ -22,7 +22,7 @@ jobs:
 
       - name: Install-dependencies
         run: |
-          pip3 install zipfile sqlite3 os shutil sqlalchemy pandas requests numpy opendatasets subprocess
+          pip3 install sqlite3 os shutil sqlalchemy pandas requests numpy opendatasets subprocess
 
       - name: Run-pipeline
         run: python project/automatedPipeline.py
