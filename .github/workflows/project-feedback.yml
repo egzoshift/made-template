@@ -22,7 +22,7 @@ jobs:
 
       - name: Install-dependencies
         run: |
-          pip3 install sqlalchemy pandas requests numpy
+          pip3 install sqlalchemy pandas requests numpy opendatasets subprocess
 
       - name: Run-pipeline
         run: python project/automatedPipeline.py
