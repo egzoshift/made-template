@@ -29,6 +29,7 @@ jobs:
       - name: Install-dependencies
         run: |
           pip3 install sqlalchemy pandas requests numpy opendatasets
+          pip install jupyter jupyterlab
 
       - name: Run-pipeline
         run: python project/automatedPipeline.py
