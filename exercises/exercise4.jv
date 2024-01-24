@@ -1,0 +1,99 @@
+pipeline BatteryPipeline { 
+
+    block BatteryExtractor oftype HttpExtractor {
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    } 
+    
+    block BatteryArchiveInterpreter oftype ArchiveInterpreter {
+        archiveType: "zip";
+    } 
+    
+    block BatteryFilePicker oftype FilePicker {
+        path: "/data.csv"; 
+    }
+
+    block BatteryFileInterpreter oftype TextFileInterpreter{
+
+    }
+
+     block BatteryCoreDataSelector oftype CellRangeSelector {
+    select: range A1:K*;
+    } 
+     
+    block BatteryCSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+   
+    
+    block RenameTemperaturCellWriter oftype CellWriter {
+        at: cell E1;
+        write: ["Temperatur"]; 
+    }
+
+    block RenameTemperaturBatteryCellWriter oftype CellWriter {
+        at: cell J1;
+        write: ["Batterietemperatur"]; 
+    }  
+
+    block BatterieTableInterpreter oftype TableInterpreter { 
+        header: true;
+        columns: [
+        "Geraet" oftype PosIntegerType,
+        "Hersteller" oftype text, 
+        "Model" oftype text, 
+        "Monat" oftype integer, 
+        "Temperatur" oftype decimal, 
+        "Batterietemperatur" oftype decimal, 
+        "Geraet aktiv" oftype text, 
+        ];
+    } 
+     
+    transform CelsiusToFahrenheit {
+        from celsius oftype decimal;
+        to fahrenheit oftype decimal;
+        fahrenheit: (celsius * 1.8) + 32;
+    } 
+
+     block CelsiusToFahrenheitBatteryTransformer oftype TableTransformer {
+        inputColumns: ['Batterietemperatur'];
+        outputColumn: 'Batterietemperatur';
+        use: CelsiusToFahrenheit;
+    } 
+
+    block CelsiusToFahrenheitTransformer oftype TableTransformer {
+        inputColumns: ['Temperatur'];
+        outputColumn: 'Temperatur';
+        use: CelsiusToFahrenheit;
+    }
+
+   
+
+    valuetype PosIntegerType oftype integer {
+        constraints: [ PosRange ];
+    }
+
+     constraint PosRange oftype RangeConstraint {
+        lowerBoundInclusive: true;
+        lowerBound: 1;
+    }
+    
+    block BatteryLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "./temperatures.sqlite";
+     } 
+
+   BatteryExtractor 
+    -> BatteryArchiveInterpreter
+    -> BatteryFilePicker
+    -> BatteryFileInterpreter
+    -> BatteryCSVInterpreter
+    -> BatteryCoreDataSelector
+    -> RenameTemperaturCellWriter
+    -> RenameTemperaturBatteryCellWriter
+    -> BatterieTableInterpreter
+    -> CelsiusToFahrenheitTransformer
+    -> CelsiusToFahrenheitBatteryTransformer
+    -> BatteryLoader;
+
+} 
